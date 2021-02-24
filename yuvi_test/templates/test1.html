@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+
+    {#    <style>#}
+    {#        table, th, td{#}
+    {#            border: 2px solid black;#}
+    {#        }#}
+    {#    </style>#}
+</head>
+<body>
+{#{{ name }}#}
+{#{{ class }}#}
+{#{{ data.name }}#}
+{#{{ data.class }}#}
+{#{{ data.0 }}#}
+{#{{ data.1 }}#}
+{#{{ data.2 }}#}
+{#<p>gfbgsdkfbgdskjfbdsfkjdsbfkjsdfb</p>#}
+{#{% for datum in data %}#}
+{#    {{ datum }}#}
+{#    <hr>#}
+{#{% endfor %}#}
+<div class="table-responsiveness container">
+    <table class="table table-md text-center table-hover table-dark">
+        <thead class="bg-info h4">
+        <tr>
+            <th>Number</th>
+            <th>I</th>
+            <th>Answer</th>
+        </tr>
+        </thead>
+        {% for d in list1 %}
+            {#    {{ d }}#}
+            <tr>
+                <td>{{ d.num }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;X</td>
+                <td>{{ d.i }}</td>
+                <td>=&nbsp;&nbsp;&nbsp;{{ d.ans }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>
