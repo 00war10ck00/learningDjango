@@ -20,5 +20,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("",index),
     path("script",test2),
-    path("append",append)
+    path("append",append),
+    path("delete",delete),
+    path("edit",edit),
+    path("update",update)
 ]

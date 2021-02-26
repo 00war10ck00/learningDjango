@@ -24,7 +24,7 @@
     <div class="container input-group mb-2 mt-2">
         <div class="input-group-prepend mt-2 mr-2">
             {#    <label class="input-group-prepend">Enter New User</label>#}
-            <span class="input-group-text" style="height:40px">Enter New User</span>
+            <span class="input-group-text ml-5" style="height:40px">Enter New User</span>
         </div>
         <input class="form-control mb-2 mt-2 col-2 input-lg mr-2" style="height:40px" type="text" name="text1"
                id="text1" placeholder="Enter Name">
@@ -47,10 +47,12 @@
         <table class="table table-striped text-center table-hover">
             <thead class="bg-dark text-light h3">
             <tr>
+                <th>S.No</th>
                 <th>Name</th>
                 <th>Age</th>
                 <th>Mobile</th>
                 <th>Gender</th>
+                <th>Actions</th>
 
             </tr>
             </thead>
@@ -58,6 +60,7 @@
             <tr>
                 {% for d in data %}
                     {#                    {% if d.Gender == 'M' %}#}
+                    <td>{{ d.S_No }}</td>
                     <td>{{ d.name }}</td>
                     <td>{{ d.age }}</td>
                     <td>{{ d.Mobile_No }}</td>
@@ -66,8 +69,26 @@
                     {#                        <div class="alert alert-danger">#}
                     {#                            <p>F</p>#}
                     {#                        </div>#}
-                    {#                    {% endif %}#}
+                    {#                {% endif %}#}
+                        <form action="delete" class="form-group">
+                            <td>
 
+                                {#                        <a href="delete?q={{ d.S_No }}" class="btn btn-danger"><i#}
+                                {#                                class="fas fa-trash-alt fa-sm"></i></a>#}
+
+
+                                {#                            {{ d.S_No }},#}
+
+
+                                <button class="btn btn-md btn-danger" value="{{ d.name }}" type="submit" name="bt2"
+                                        id="bt2"><i
+                                        class="fas fa-trash-alt fa-sm"></i></button>&nbsp;&nbsp;
+                        </form>
+{#                        <form action="edit" class="form-group">#}
+                            <a href="edit?bt3={{ d.S_No }}" class="btn btn-md btn-primary"><i
+                                    class="fas fa-user-edit fa-xs"></i></a>
+{#                        </form>#}
+                    </td>
                     </tr>
                 {% endfor %}
             </tbody>
