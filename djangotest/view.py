@@ -45,7 +45,7 @@ def getData(request):   #post module
         database='test1'
     )
 
-    cursor = mydb.cursor()
+    cr = mydb.cursor()
 
     # cursor.execute("CREATE DATABASE test1")
 
@@ -89,19 +89,21 @@ def getData(request):   #post module
     # cursor.execute("UPDATE student SET age='26' where id='5'")
     # cursor.execute("UPDATE student SET age='32' where id='6'")
     list1 = []
-    cursor.execute("select * from student")
-    for x in cursor:
-        dict1 = {}
-        dict1['id'] = x[0]
-        dict1['name'] = x[1]
-        dict1['age'] = x[2]
-        list1.append(dict1)
-    cursor.description
-    column_names = [i[0] for i in cursor.description]
+    cr.execute("select * from student")
+    column_names = [i[0] for i in cr.description]
     print(column_names)
-    return render(request, "demo.html", {"list1": list1})
+    result = cr.fetchall()
+    for x in result:
+        dict1 = {}
+        dict1[column_names[0]] = x[0]
+        dict1[column_names[1]] = x[1]
+        dict1[column_names[2]] = x[2]
+        list1.append(dict1)
+    print(list1)
     mydb.commit()
     mydb.close()
+    return render(request, "demo.html", {"list1": list1})
+
 
 
 
