@@ -96,6 +96,9 @@ def getData(request):   #post module
         dict1['name'] = x[1]
         dict1['age'] = x[2]
         list1.append(dict1)
+    cursor.description
+    column_names = [i[0] for i in cursor.description]
+    print(column_names)
     return render(request, "demo.html", {"list1": list1})
     mydb.commit()
     mydb.close()
