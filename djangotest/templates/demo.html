@@ -8,4 +8,10 @@
 {#{{ data }}#}
 {{ list1 }}
 </body>
+<br>
+{% for x in list1 %}
+    {{ x.id }}
+    {{ x.name }}
+    {{ x.age }}<br>
+{% endfor %}
 </html>

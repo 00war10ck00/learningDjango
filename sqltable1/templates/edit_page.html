@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>edit page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body>
+<div class="container bg-dark text-center h2">
+    <label style="color:white" class="mt-2">EDIT DETAILS</label>
+</div>
+<form action="update">
+<div class="container input-group">
+    {#{{ list1 }}#}
+    <div class="input-group-append">
+        {% for l in list1 %}
+            <span class="input-group-text col-1 bg-danger mr-2" style="color: white;text-align: center">S_No&nbsp;{{ l.id }}</span>
+            <input class="mr-2" type="hidden" name="sp1" id="sp1" value="{{ l.id }}">
+            <input class="mr-2" type="text" name="text1" id="text1" value="{{ l.name }}" required>
+            <input class="mr-2" type="text" name="text2" id="text2" value="{{ l.age }}" required>
+            <input class="mr-2" type="text" name="text3" id="text3" value="{{ l.mobile }}" required>
+            <input class="mr-2" type="text" name="text4" id="text4" value="{{ l.gender }}" required>
+{#            <input class="mr-2" type="text" name="text1" id="text1" placeholder="{{ l.name }}" required>#}
+{#            <input class="mr-2" type="text" name="text2" id="text2" placeholder="{{ l.age }}" required>#}
+{#            <input class="mr-2" type="text" name="text3" id="text3" placeholder="{{ l.Mobile_No }}" required>#}
+{#            <input class="mr-2" type="text" name="text4" id="text4" placeholder="{{ l.Gender }}" required>#}
+
+        {% endfor %}
+    </div>
+<div class="input-group-prepend">
+    <span class="input-group-text bg-dark" style="color: white"><button class="btn" type="submit"><i class="fas fa-user-edit"></i></button></span>
+</div>
+</div>
+</form>
+</body>
+</html>
