@@ -1,6 +1,6 @@
 from django.http import HttpResponse
-from django.shortcuts import render
-import pymysql
+from django.shortcuts import render,redirect
+from connection import connections
 
 
 # cr.execute("drop table student")
@@ -21,12 +21,7 @@ import pymysql
 
 def show(request):
     list1 = []
-    mydb = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='test'
-    )
+    mydb = connections.conn
 
     cr = mydb.cursor()
 
@@ -54,12 +49,7 @@ def search(request):
     # print(type(name))
     list1 = []
     # print(name)
-    mydb = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='test'
-    )
+    mydb = connections.conn
 
     cr = mydb.cursor()
 
@@ -81,10 +71,6 @@ def search(request):
 
     return render(request, "sql_table.html", {'list1': new_data})
 
-    mydb.commit()
-    mydb.close()
-
-
 def append(request):
     list1 = []
     name = request.GET['text1']
@@ -92,12 +78,7 @@ def append(request):
     age = request.GET['text2']
     gender = request.GET['text4']
 
-    mydb = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='test'
-    )
+    mydb = connections.conn
     cr = mydb.cursor()
     cr.execute(
         "insert into student (name,age,mobile,gender) values ('" + name + "','" + age + "','" + mobile + "','" + gender + "')")
@@ -113,21 +94,16 @@ def append(request):
         dict1[name_list[4]] = x[4]
         list1.append(dict1)
 
-    return render(request, 'sql_table.html', {'list1': list1})
+    # return render(request, 'sql_table.html', {'list1': list1})
+    return redirect(show)
 
-    mydb.close()
 
 
 def delete(request):
     list1 = []
     id = request.GET['bt2']
     # print(type(id))
-    mydb = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='test'
-    )
+    mydb = connections.conn
     cr = mydb.cursor()
 
     cr.execute("delete from student where id='" + id + "'")
@@ -151,12 +127,7 @@ def delete(request):
 def edit(request):
     list1 = []
     id = request.GET['bt3']
-    mydb = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='test'
-    )
+    mydb = connections.conn
     cr = mydb.cursor()
 
     cr.execute("select * from student where id = '"+id+"'")
@@ -170,7 +141,6 @@ def edit(request):
         dict1[name_list[4]] = x[4]
         list1.append(dict1)
     return render(request,"edit_page.html",{'list1':list1})
-    mydb.close()
 
 def update(request):
     list1 = []
@@ -180,12 +150,7 @@ def update(request):
     mobile = request.GET['text3']
     gender = request.GET['text4']
 
-    mydb = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='',
-        database='test'
-    )
+    mydb = connections.conn
     cr = mydb.cursor()
 
     cr.execute("update student set name='"+name+"', age='"+age+"', mobile='"+mobile+"', gender='"+gender+"' where id = '"+id+"'")

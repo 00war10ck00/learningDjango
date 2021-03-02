@@ -19,7 +19,7 @@ from view import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("index", index),
-    path("indexpage", indexpage),
-    path("", addPage),
+    path("", indexpage),
+    path("addPage", addPage),
     path("getData", getData),
 ]

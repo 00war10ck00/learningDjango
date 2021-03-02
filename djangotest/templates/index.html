@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 </head>
 <body>
 
-{#{{ data.Name }}#}
-{#{{ data.class }}#}
-{#{{ data.0 }}#}
-{#{{ data.1 }}#}
-{#{{ data.2 }}#}
-{#<h1>Hello World</h1>#}
-{#<h1>Hello World</h1>#}
-{#<h1>Hello World</h1>#}
-{#<h1>Hello World</h1>#}
-{#<h1>Hello World</h1>#}
-{% for datum in data %}
-    {{ datum }}
-    <hr>
-{% endfor %}
+<div class="container">
+    {% for datum in data %}
+        {{ datum }}
+        <hr>
+    {% endfor %}
+</div>
 
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
 </body>
 </html>
