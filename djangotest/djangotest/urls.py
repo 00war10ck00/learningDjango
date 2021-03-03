@@ -20,6 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("index", index),
     path("", indexpage),
+    path("uploadImage", uploadImage),
     path("addPage", addPage),
     path("getData", getData),
 ]

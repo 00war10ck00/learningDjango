@@ -2,7 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import pymysql
 from sqlite3 import *
-
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import FileSystemStorage
+import random
 
 # conn = connect('db.sqlite3')
 # query ="select * from auth_user"
@@ -10,7 +12,6 @@ from sqlite3 import *
 # cr.execute(query)
 # data = cr.fetchall()
 # print(data)
-
 
 def index(request):
     return HttpResponse("<h1>hello World</h1>")
@@ -22,6 +23,14 @@ def indexpage(request):
     # return render(request, 'index.html',data)
     return render(request, 'index.html', {'data': data})
 
+
+def uploadImage(request):
+    file = request.FILES['photo']
+    fs = FileSystemStorage()
+    filename = fs.save(f"image/demo{file.name}", file)
+    uploaded_file_url = fs.url(filename)
+    print(uploaded_file_url)
+    return HttpResponse("Success")
 
 def addPage(request):
     return render(request, "addPage.html")

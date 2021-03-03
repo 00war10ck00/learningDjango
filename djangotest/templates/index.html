@@ -8,12 +8,28 @@
 </head>
 <body>
 
+{#<div class="container">#}
+{#    {% for datum in data %}#}
+{#        {{ datum }}#}
+{#        <hr>#}
+{#    {% endfor %}#}
+{#</div>#}
+
+
 <div class="container">
-    {% for datum in data %}
-        {{ datum }}
-        <hr>
-    {% endfor %}
+    <form action="uploadImage" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="photo">File</label>
+            <input type="file" name="photo" id="photo" class="form-control">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-danger">Submit</button>
+        </div>
+    </form>
 </div>
+
+<img src="{% static '/media/image/demodownload.jpeg' %}" alt="">
 
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
