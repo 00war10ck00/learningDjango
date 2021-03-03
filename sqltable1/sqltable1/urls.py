@@ -23,5 +23,6 @@ urlpatterns = [
     path("append",append),
     path("delete",delete),
     path("edit",edit),
-    path('update',update)
+    path('update',update),
+    # path('uploadimage',uploadimage)
 ]

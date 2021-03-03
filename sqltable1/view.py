@@ -1,6 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from connection import connections
+
+from django.core.files.storage import FileSystemStorage
 
 
 # cr.execute("drop table student")
@@ -35,7 +37,10 @@ def show(request):
         dict1[name_list[2]] = x[2]
         dict1[name_list[3]] = x[3]
         dict1[name_list[4]] = x[4]
+        dict1[name_list[5]] = x[5]
+        print(list1)
         list1.append(dict1)
+    print(list1)
     return render(request, "sql_table.html", {'list1': list1})
 
     # mydb.commit()
@@ -71,6 +76,7 @@ def search(request):
 
     return render(request, "sql_table.html", {'list1': new_data})
 
+
 def append(request):
     list1 = []
     name = request.GET['text1']
@@ -96,7 +102,6 @@ def append(request):
 
     # return render(request, 'sql_table.html', {'list1': list1})
     return redirect(show)
-
 
 
 def delete(request):
@@ -130,7 +135,7 @@ def edit(request):
     mydb = connections.conn
     cr = mydb.cursor()
 
-    cr.execute("select * from student where id = '"+id+"'")
+    cr.execute("select * from student where id = '" + id + "'")
     name_list = [i[0] for i in cr.description]
     for x in cr:
         dict1 = {}
@@ -140,20 +145,35 @@ def edit(request):
         dict1[name_list[3]] = x[3]
         dict1[name_list[4]] = x[4]
         list1.append(dict1)
-    return render(request,"edit_page.html",{'list1':list1})
+    return render(request, "edit_page.html", {'list1': list1})
+
 
 def update(request):
     list1 = []
-    id = request.GET['sp1']
-    name = request.GET['text1']
-    age = request.GET['text2']
-    mobile = request.GET['text3']
-    gender = request.GET['text4']
+    id = request.POST['sp1']
+    name = request.POST['text1']
+    age = request.POST['text2']
+    mobile = request.POST['text3']
+    gender = request.POST['text4']
+    if (request.FILES != ""):
+        file = request.FILES['photo']
+        fs = FileSystemStorage()
+        filename = fs.save(f"images/{file.name}", file)
+        print(filename)
+        uploaded_file_url = fs.url(filename)
+        print(uploaded_file_url)
+        sql = "update student set name='" + name + "', age='" + age + "', mobile='" + mobile + "', gender='" + gender + "', image='" + uploaded_file_url + "' where id = '" + id + "'"
+
+    else:
+        sql = "update student set name='" + name + "', age='" + age + "', mobile='" + mobile + "', gender='" + gender + "' where id = '" + id + "'"
 
     mydb = connections.conn
     cr = mydb.cursor()
 
-    cr.execute("update student set name='"+name+"', age='"+age+"', mobile='"+mobile+"', gender='"+gender+"' where id = '"+id+"'")
+    # cr.execute(
+    # "update student set name='" + name + "', age='" + age + "', mobile='" + mobile + "', gender='" + gender + "' where id = '" + id + "'")
+    cr.execute(sql)
+
     mydb.commit()
     cr.execute("select * from student")
     name_list = [i[0] for i in cr.description]
@@ -165,6 +185,15 @@ def update(request):
         dict1[name_list[3]] = x[3]
         dict1[name_list[4]] = x[4]
         list1.append(dict1)
-    return render(request,"sql_table.html",{'list1':list1})
+    return render(request, "sql_table.html", {'list1': list1})
 
 
+def uploadimage(request):
+    file = request.FILES['photo']
+    fs = FileSystemStorage()
+    filename = fs.save(f"images/{file.name}", file)
+    print(filename)
+    uploaded_file_url = fs.url(filename)
+    print(uploaded_file_url)
+
+    return HttpResponse("success")
