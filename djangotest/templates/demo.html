@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 </head>
 <body>
+{{ request.session.admin }}
+<hr>
 {#{{ data }}#}
-{{ list1 }}
-</body>
-<br>
-{% for x in list1 %}
-    {{ x.id }}
-    {{ x.name }}
-    {{ x.age }}<br>
-{% endfor %}
+{% if 'admin' in request.session %}
+    <p>yes</p>
+    <hr>
+{% else %}
+    <p>No</p>
+    <hr>
+{% endif %}
+{% if 'Ram' in request.session.admin %}
+    {{ list1 }}
+    </body>
+    <br>
+    {% for x in list1 %}
+        {{ x.id }}
+        {{ x.name }}
+        {{ x.age }}<br>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-danger">
+        <p>Not Verify</p>
+    </div>
+{% endif %}
+
 </html>

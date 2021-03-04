@@ -17,6 +17,7 @@
 
 
 <div class="container">
+{{ request.session.admin }}
     <form action="uploadImage" enctype="multipart/form-data" method="post">
         {% csrf_token %}
         <div class="form-group">

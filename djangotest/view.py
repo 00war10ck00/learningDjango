@@ -19,7 +19,10 @@ def index(request):
 
 def indexpage(request):
     # data ={"Name":'Ram', 'class':10}
-    data = ['Ram', 10, 6280995201]
+    data = ['Sham', 10, 6280995201]
+
+    request.session['admin'] = data
+    print(request.session['admin'])
     # return render(request, 'index.html',data)
     return render(request, 'index.html', {'data': data})
 
@@ -33,6 +36,7 @@ def uploadImage(request):
     return HttpResponse("Success")
 
 def addPage(request):
+    del request.session['admin']
     return render(request, "addPage.html")
 
 
