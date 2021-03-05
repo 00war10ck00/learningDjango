@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>public_home</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body>
+{% include 'navbar.html' %}
+<div class="container col-6 text-center mt-5 pt-5 pb-5 bg-warning">
+<h1>Create Your Contact List</h1>
+    <span>Create New Account&nbsp;&nbsp;&nbsp;<br></span><a class="btn btn-danger mb-4" href="signup" style="color: white;text-decoration: none">Signup</a></button>
+    <h4 class="mb-4">OR</h4>
+    <span>Login Into Existing Account&nbsp;&nbsp;&nbsp;<br></span><a class="btn btn-danger" href="login_page" style="color: white;text-decoration: none">Login</a></button>
+</div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>signup</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body>
+{% include 'navbar.html' %}
+
+<div class="container col-6 mt-3">
+    <div class="text-center">
+        <label class="h1 text-dark"> Signup Form</label>
+    </div>
+    <form action="register" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div class="form-group row">
+            {#            <div class="col">#}
+            <div class="h5 col-sm-6">
+                <label for="username">Username</label>
+                <input class="form-control" type="text" name="username" id="username" placeholder="Enter Username">
+            </div>
+            <div class="h5 col-sm-6">
+                <label for="email">Email</label>
+                <input class="form-control" type="text" name="email" id="email" placeholder="Enter Email">
+            </div>
+            <div class="h5 col-sm-6">
+                <label for="name">Name</label>
+                <input class="form-control" type="text" name="name" id="name" placeholder="Enter Name">
+            </div>
+            <div class="h5 col-sm-6">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" name="password" id="password"
+                       placeholder="Enter Password">
+            </div>
+            {#            </div>#}
+        </div>
+        <div class="form-group row">
+            {#            <div class="col">#}
+            <div class="col-sm-6 h5">
+                <label for="mobile">Mobile No</label>
+                <input class="form-control" type="text" name="mobile" id="mobile" placeholder="Enter Mobile">
+            </div>
+            <div class="h5 col-sm-6">
+                <label for="gender">Gender</label>
+                <input class="form-control" type="text" name="gender" id="gender" placeholder="Enter Gender">
+            </div>
+            <div class="h5 col-12">
+                <label for="photo">Upload Photo</label>
+                <input class="form-control" type="file" name="photo" id="photo">
+            </div>
+            {#            </div>#}
+        </div>
+        <div class="form-group h5">
+            <button type="submit" class="btn btn-primary form-control mt-3">Submit</button>
+        </div>
+    </form>
+</div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>

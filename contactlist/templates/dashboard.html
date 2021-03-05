@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+
+</head>
+<body>
+{% include 'navbar.html' %}
+
+{#{{ request.session.admin.0 }}#}
+<div class="container mt-5">
+    <h1>WELCOME</h1>
+    <h3 style="text-transform: capitalize">{{ request.session.admin.0 }}</h3>
+</div>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>
