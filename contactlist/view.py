@@ -71,6 +71,7 @@ def login(request):
         return redirect(dashboard)
     else:
         messages.warning(request, 'Invalid Username/Password')
+        messages.error(request, 'Invalid Username/Password')
         # return render(request, 'login.html')
         return redirect(login_page)
 
