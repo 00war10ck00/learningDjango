@@ -10,25 +10,26 @@
 </head>
 <body>
 {% include 'navbar.html' %}
-{% if messages %}
-    {% for message in messages %}
-
-        <div class="alert
-        {% if message.tags == 'error' %}
-        alert-danger
-        {% else %}
-        alert-{{ message.tags }}
-        {% endif %}
-
-        alert-dismissible fade show" role="alert">
-            <strong>{{ message }}</strong>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+{#{% if messages %}#}
+{#    {% for message in messages %}#}
+{##}
+{#        <div class="alert#}
+{#        {% if message.tags == 'error' %}#}
+{#        alert-danger#}
+{#        {% else %}#}
+{#        alert-{{ message.tags }}#}
+{#        {% endif %}#}
+{##}
+{#        alert-dismissible fade show" role="alert">#}
+{#            <strong>{{ message }}</strong>#}
+{#            <button type="button" class="close" data-dismiss="alert" aria-label="Close">#}
+{#                <span aria-hidden="true">&times;</span>#}
+{#            </button>#}
+{#        </div>#}
         {#        <p{% if message.tags %} class="alert alert-{{ message.tags }} " data-di{% endif %}>{{ message }}</p>#}
-    {% endfor %}
-{% endif %}
+{#    {% endfor %}#}
+{#{% endif %}#}
+{% include 'alerts.html' %}
 <div class="container col-6 mt-5">
     <div class="text-center">
         <label class="h1 text-dark"> Login Form</label>
