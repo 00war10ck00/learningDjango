@@ -1,10 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>viewcontact</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
 </head>
 <body>
+{% include 'navbar.html' %}
 
+<div class="container text-center">
+    <h1 class="mt-4 mb-4">Contacts List</h1>
+    <div class="table-responsive purple-gradient">
+        <table class="table table-striped justify-content-center">
+            <thead style="background-image: linear-gradient(#17a2b8,#5b80b2)">
+            <tr>
+                <th>Contact ID</th>
+                <th>Username</th>
+                <th>Contact Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Photo</th>
+            </tr>
+            </thead>
+            <tbody style="background-image: radial-gradient(#17a2b8,#5b80b2)">
+            {% for d in data %}
+                <tr>
+                    <td>{{ d.contact_id }}</td>
+                    <td>{{ d.username }}</td>
+                    <td>{{ d.contactname }}</td>
+                    <td>{{ d.mobile }}</td>
+                    <td>{{ d.email }}</td>
+                    <td><img src="{% static d.photo %}" style="height: 50px"></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
 </body>
 </html>

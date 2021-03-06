@@ -9,7 +9,11 @@
 </head>
 <body>
 {% include 'navbar.html' %}
-
+{% if messages %}
+{% for message in messages %}
+    <p{% if message.tags %} class="alert alert-{{ message.tags }}">{% endif %}{{ message }}</p>
+    {% endfor %}
+{% endif %}
 <div class="container col-6 mt-3">
     <div class="text-center">
         <label class="h1 text-dark"> Signup Form</label>

@@ -10,6 +10,11 @@
 </head>
 <body>
 {% include 'navbar.html' %}
+{% if messages %}
+    {% for message in messages %}
+    <p{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</p>
+    {% endfor %}
+{% endif %}
 <form action="contact_addition" enctype="multipart/form-data" method="post">
     {% csrf_token %}
     <div class="container col-6 mt-5">
@@ -21,7 +26,8 @@
             {#            <div class="col">#}
             <div class="h5 col-sm-6">
                 <label for="username">Username</label>
-                <input class="form-control" type="text" name="username" id="username" readonly value="{{ request.session.admin.0 }}">
+                <input class="form-control" type="text" name="username" id="username" readonly
+                       value="{{ request.session.admin.0 }}">
             </div>
             <div class="h5 col-sm-6">
                 <label for="email">Email</label>
@@ -29,7 +35,8 @@
             </div>
             <div class="h5 col-sm-6">
                 <label for="contactname">Contact Name</label>
-                <input class="form-control" type="text" name="contactname" id="contactname" placeholder="Enter Contact Name">
+                <input class="form-control" type="text" name="contactname" id="contactname"
+                       placeholder="Enter Contact Name">
             </div>
             <div class="h5 col-sm-6">
                 <label for="mobile">Mobile</label>

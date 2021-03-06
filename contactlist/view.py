@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from connection import connections
-import pymysql
+from django.contrib import messages
 import random
 from django.core.files.storage import FileSystemStorage
 
@@ -29,19 +29,24 @@ def register(request):
     mydb = connections.conn
     cr = mydb.cursor()
 
-    query = "select username from signup"
+    query = "select username from signup where username = '" + username + "'"
     cr.execute(query)
     rows = cr.rowcount
     # print(cr.rowcount)
     # for x in cr:
     #     print(x)
     if rows == 1:
-        return HttpResponse("Failed")
+        messages.warning(request, "Signup Failed - Username Already Exist")
+        # return HttpResponse("Failed")
+        return redirect(signup)
+
     else:
         query = "insert into signup(username,name,email,password,gender,mobile,photo) values('" + username + "','" + name + "','" + email + "','" + password + "','" + gender + "','" + mobile + "','" + uploaded_file_url + "')"
         cr.execute(query)
         mydb.commit()
-        return HttpResponse("sucess")
+        messages.da(request, "Signup Successfull")
+        return redirect(login_page)
+        # return HttpResponse("sucess")
 
 
 def login_page(request):
@@ -62,10 +67,12 @@ def login(request):
             data = [x[0], x[1], x[6]]
             request.session['admin'] = data
         # return HttpResponse("sucess")
+        messages.success(request, 'Login Successfull')
         return redirect(dashboard)
     else:
-        return render(request, 'login.html')
-
+        messages.warning(request, 'Invalid Username/Password')
+        # return render(request, 'login.html')
+        return redirect(login_page)
 
 def dashboard(request):
     if 'admin' in request.session:
@@ -76,11 +83,15 @@ def dashboard(request):
 
 def logout(request):
     del request.session['admin']
+    messages.success(request, 'Log Out Successfully')
     return redirect(login_page)
 
 
 def addcontact(request):
-    return render(request, 'addcontact.html')
+    if 'admin' in request.session:
+        return render(request, 'addcontact.html')
+    else:
+        return redirect(login_page)
 
 
 def contact_addition(request):
@@ -99,5 +110,35 @@ def contact_addition(request):
     cr.execute(query)
 
     mydb.commit()
-
+    messages.success(request, 'Added Successfully')
     return redirect(addcontact)
+
+
+def contact_view_page(request):
+    # return render(request,'viewcontact.html')
+    if 'admin' in request.session:
+        return redirect(view_contact)
+    else:
+        return redirect(login_page)
+
+
+def view_contact(request):
+    data = []
+    mydb = connections.conn
+    cr = mydb.cursor()
+    username = request.session['admin'][0]
+    # print(username)
+    query = "select * from contacts where username = '" + username + "'"
+    cr.execute(query)
+    field_names = [i[0] for i in cr.description]
+    # print(field_names)
+    for x in cr:
+        dict1 = {}
+        dict1[field_names[0]] = x[0]
+        dict1[field_names[1]] = x[1]
+        dict1[field_names[2]] = x[2]
+        dict1[field_names[3]] = x[3]
+        dict1[field_names[4]] = x[4]
+        dict1[field_names[5]] = x[5]
+        data.append(dict1)
+    return render(request, 'viewcontact.html', {'data': data})
