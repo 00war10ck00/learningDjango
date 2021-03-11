@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" id="">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+
+
+    <title>Document</title>
+</head>
+<body onload="tbody()">
+{% include 'navbar.html' %}
+<div class="container table-responsive mt-4 text-center">
+    <h2>Your Cart</h2>
+    <table class="table table-striped mt-3">
+        <thead style="background-image: linear-gradient(darkseagreen,lightgrey)">
+        <tr class="h4">
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="tbody" style="background-image: radial-gradient(darkseagreen,lightgrey)"></tbody>
+        <tfoot id="tfoot" style="background-image: linear-gradient(lightgrey,darkseagreen)">
+
+        {% if request.session.cart|length > 0 %}
+            <tr>
+                <td colspan="4" align="right"><h4>Grand Total</h4></td>
+                <td><h4><span id="total"></span></h4></td>
+            </tr>
+        {% endif %}
+
+        </tfoot>
+    </table>
+    <div class="text-center">
+        <a href="{% url 'checkout' %}" class="btn btn-outline-success w-25"><strong>CHECKOUT</strong></a>
+    </div>
+    <div id="msg"></div>
+    {#    {{ request.session.cart }}#}
+</div>
+<script>
+    function tbody() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var output = JSON.parse(this.response);
+                console.log(output)
+                var data = output['data'];
+                if (data.length > 0) {
+                    createTable(data)
+                } else {
+                    createTable(data)
+                    d = `
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                             <strong>Empty</strong> You should check in on some of those fields below.
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                 </button>
+                    </div>`
+                    document.getElementById('msg').innerHTML = d;
+                }
+
+                document.getElementById('total').innerHTML = output['total']
+
+            }
+        };
+        xhttp.open("GET", "cartajax", true);
+        xhttp.send();
+    }
+
+    function createTable(output) {
+        var data = ""
+
+        for (var i = 0; i < output.length; i++) {
+            data += `
+                    <tr class="h5">
+                    <td><img src="../static/${output[i]['photo']}" style="height:100px;width: 90px" "></td>
+                    <td> ${output[i]['product_price']}</td>
+                    <td><a style="color: black" onclick="inc_dec(${output[i]['p_id']},0)"><i class="fas fa-minus-circle fa-lg mr-2"></i></a><input class="text-center" type="text" readonly value="${output[i]['quantity']}" style="width: 40px"><a style="color: black" onclick="inc_dec(${output[i]['p_id']},1)"><i class="fas fa-plus-circle fa-lg ml-2"></i></a></td>
+                    <td>${output[i]['total_price']}</td>
+                    <td><a onclick="del(${output[i]['p_id']})" <i class="fas fa-minus-circle fa-lg"></i></td>
+                    </tr>
+                    `
+        }
+        document.getElementById('tbody').innerHTML = data;
+    }
+
+    function inc_dec(pid, s) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var output = this.response;
+                {#console.log(output)#}
+                if (output == 'success') {
+                    tbody();
+                }
+            }
+        };
+        xhttp.open("GET", "increment?id=" + pid + "&st=" + s, true);
+        xhttp.send();
+    }
+
+
+    function del(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var output = this.response;
+                {#console.log(output)#}
+                if (output == 'success') {
+                    tbody();
+                }
+            }
+        };
+        xhttp.open("GET", "deletecart?pid=" + id, true);
+        xhttp.send();
+    }
+</script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>

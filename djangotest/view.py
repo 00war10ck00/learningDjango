@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 import pymysql
+# from django import *
 from sqlite3 import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.storage import FileSystemStorage
@@ -12,6 +13,7 @@ import random
 # cr.execute(query)
 # data = cr.fetchall()
 # print(data)
+
 
 def index(request):
     return HttpResponse("<h1>hello World</h1>")
@@ -117,6 +119,12 @@ def getData(request):   #post module
     mydb.close()
     return render(request, "demo.html", {"list1": list1})
 
+
+def home(request):
+    return render(request, 'users/home.html')
+
+def contact(request):
+    return render(request, 'users/contact.html')
 
 
 

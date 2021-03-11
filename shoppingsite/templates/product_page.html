@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+
+</head>
+<body>
+{% include 'navbar.html' %}
+{% include 'alert.html' %}
+<div class="container mt-4 row ml-5">
+    <img src="{% static data.0.photo %}" style="height: 550px; width: 400px">
+    <div class="ml-5 col-sm-6">
+        <h1>{{ data.0.product_name }}</h1>
+        <br><br>
+        <h4 class="ml-5" style="color: red">Regular Price:&nbsp;&nbsp;<strike>{{ data.0.product_price }}</strike></h4>
+        <form action="cart_addition">
+            <input type="text" name="p_id" id="p_id" value="{{ data.0.p_id }}" hidden>
+        <h3 class="ml-5 text-success">Discount Price:&nbsp;&nbsp;{{ data.0.discount_price }}</h3>
+        <br><br>
+
+            <h4 class="ml-5">Quantity:&nbsp;<input type="number" name="quantity" id="quantity" value="1" min="1"
+                                                   style="width:20%">
+                <button class="btn bg-white"><i class="fas fa-cart-plus fa-lg"></i></button>
+            </h4>
+        </form>
+    </div>
+</div>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>

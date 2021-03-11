@@ -18,7 +18,7 @@
 
 <div class="container">
 {{ request.session.admin }}
-    <form action="uploadImage" enctype="multipart/form-data" method="post">
+    <form action="{% url 'uploadImage' %}" enctype="multipart/form-data" method="post">
         {% csrf_token %}
         <div class="form-group">
             <label for="photo">File</label>
@@ -29,6 +29,7 @@
         </div>
     </form>
 </div>
+<a href="{% url 'ram' %}">Home New</a>
 <img src="{% static '/media/image/demodownload.jpeg' %}" alt="">
 
 <script src="{% static 'js/jquery.min.js' %}"></script>

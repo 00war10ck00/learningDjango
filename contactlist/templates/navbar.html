@@ -20,7 +20,8 @@
                 <a class="nav-link" href="logout">Logout&nbsp;<i class="fas fa-sign-out-alt"></i></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="login_page" style="display: none">Login&nbsp;<i class="fas fa-sign-in-alt"></i></a>
+                <a class="nav-link" href="login_page" style="display: none">Login&nbsp;<i
+                        class="fas fa-sign-in-alt"></i></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#"><img src="{% static request.session.admin.2 %}" style="height: 20px"></a>
@@ -34,10 +35,10 @@
         <i class="fab fa-instagram fa-4x"></i>
     </div>
 
-    {% else %}
+{% else %}
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-info" style="color: white">
-    <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="#">CONTACT LIST <span class="sr-only"></span></a>
             </li>
@@ -48,7 +49,7 @@
                 <a class="nav-link" href="#" style="display: none">DASHBOARD</a>
             </li>
         </ul>
-    <ul class="navbar-nav">
+        <ul class="navbar-nav">
             <li class="nav-item active">
                 <a class="nav-link" href="signup">SignUp&nbsp;<i class="fas fa-user-plus"></i></a>
             </li>
@@ -57,11 +58,12 @@
             </li>
         </ul>
     </nav>
-<div class="container-fluid pt-2" style="position: fixed; bottom: 0;height: 75px;background: slategray;color: white;text-align: center">
-    <i class="fab fa-facebook fa-4x"></i>&nbsp;
-    <i class="fab fa-twitter fa-4x"></i>&nbsp;
-    <i class="fab fa-instagram fa-4x"></i>
-</div>
+    <div class="container-fluid pt-2"
+         style="position: fixed; bottom: 0;height: 75px;background: slategray;color: white;text-align: center">
+        <i class="fab fa-facebook fa-4x"></i>&nbsp;
+        <i class="fab fa-twitter fa-4x"></i>&nbsp;
+        <i class="fab fa-instagram fa-4x"></i>
+    </div>
 
 
 

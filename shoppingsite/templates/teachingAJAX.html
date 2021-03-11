@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajex</title>
+</head>
+<body>
+<h1>Hello World</h1>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/CQ1R38Zm-rs" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+
+<table class="table table-responsive">
+    <thead>
+    <tr>
+        <th>p_id</th>
+        <th>product_name</th>
+        <th>product_price</th>
+        <th>discount_price</th>
+    </tr>
+    </thead>
+    <tbody id="demo">
+
+    </tbody>
+</table>
+<button type="button" onclick="demo()">Submit</button>
+<script>
+    function demo() {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var output = JSON.parse(this.response);
+                {#console.log(output);#}
+                crateTable(output);
+            }
+        };
+        xhttp.open("GET", "showAjexPageResponse", true);
+        xhttp.send();
+    }
+
+    function crateTable(output) {
+        console.log(output);
+        var data = ""
+        for (var i = 0; i <= output.length - 1; i++) {
+            data += `
+                    <tr>
+                        <td>${output[i]['p_id']}</td>
+                        <td>${output[i]['product_name']}</td>
+                        <td>${output[i]['product_price']}</td>
+                        <td>${output[i]['discount_price']}</td>
+                    </tr>
+                    `
+        }
+        document.getElementById("demo").innerHTML = data;
+    }
+</script>
+</body>
+</html>

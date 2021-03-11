@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+{% include 'navbar.html' %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="text-center">
+                <h2>Bill Detail</h2>
+            </div>
+            <form id="processTopay">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" data-rule-required="true" class="form-control" name="name" id="name">
+                </div>
+                <div class="form-group">
+                    <label for="total">Price</label>
+                    <input type="text" data-rule-required="true" value="{{ total }}" readonly class="form-control"
+                           name="total" id="total">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" data-email-required="true" data-rule-required="true" class="form-control"
+                           name="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label for="mobile">Mobile</label>
+                    <input type="number" minlength="10" maxlength="10" data-rule-required="true" class="form-control"
+                           name="mobile" id="mobile">
+                </div>
+                <div class="form-group">
+                    <label for="type">Payment Type</label>
+                    <select name="type" id="type" class="form-control">
+                        <option value="online">Online</option>
+                        <option value="COD">COD</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea name="address" data-rule-required="true" id="address" cols="30"
+                              class="form-control"></textarea>
+                </div>
+                <div class="form-group text-center">
+                    <button class="btn btn-warning w-25" onclick="dopayment()" type="button">Process to Pay</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-6">
+            <div class="text-center">
+                <h2>Product</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="table text-center table-success" style="margin-top: 15px">
+                    <thead>
+                    <tr>
+                        <th>product_name</th>
+                        <th>quantity</th>
+                        <th>total_price</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for sess in request.session.cart %}
+                        <tr>
+                            <td>{{ sess.product_name }}</td>
+                            <td>{{ sess.quantity }}</td>
+                            <td>{{ sess.total_price }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{#{{ request.session.cart }}#}
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+<script>
+    function dopayment() {
+        if ($('#processTopay').valid()) {
+            var name = document.getElementById('name').value;
+            var mobile = document.getElementById('mobile').value;
+            var email = document.getElementById('email').value;
+            var address = document.getElementById('address').value;
+            var type = document.getElementById('type').value;
+            var total = document.getElementById('total').value;
+            var formdata = new FormData();
+            formdata.append('name', name);
+            formdata.append('mobile', mobile);
+            formdata.append('email',email);
+            formdata.append('address', address);
+            formdata.append('type', type);
+            formdata.append('total', total);
+            console.log(type);
+            if (type == 'COD') {
+                console.log("Done");
+                var xml = new XMLHttpRequest();
+                xml.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var ar = JSON.parse(this.response);
+                        console.log(ar);
+                        window.location.href = "thankspage?billid=" + ar['billid'];
+                    }
+                };
+                xml.open('POST', 'payment_action', true);
+                xml.send(formdata);
+            } else {
+                var options = {
+                    "key": "rzp_test_55oiFAfh7L9uFg",
+                    "amount": parseFloat(total) * 100,
+                    "currency": "INR",
+                    "name": "Zomato",
+                    "description": "Test Transaction",
+                    "image": "{% static 'logo.svg' %}",
+
+                    "handler": function (response) {
+                        if (response.razorpay_payment_id == "") {
+                            {#alert('Failed');#}
+                            {#window.location.href = "bookingaction?status=failed";#}
+                        } else {
+                            {#alert('Success');#}
+                            {#window.location.href = "bookingaction?status=success&&gt=" + grandtotal;#}
+                        }
+                        var xml = new XMLHttpRequest();
+                        xml.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                var ar = JSON.parse(this.response);
+                                console.log(ar);
+                                window.location.href = "thankspage?billid=" + ar['billid'];
+                            }
+                        };
+                        xml.open('POST', 'payment_action', true);
+                        xml.send(formdata);
+                    },
+                    "prefill": {
+                        "name": "",
+                        "email": email,
+                        "contact": mobile
+                    },
+                    "notes": {"address": "Razorpay Corporate Office"},
+                    "theme": {"color": "#F37254"}
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            }
+        }
+    }
+</script>
+</body>
+</html>

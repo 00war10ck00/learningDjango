@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>index</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+</head>
+<body>
+{#{{ data }}#}
+{% include 'navbar.html' %}
+<div class="container-fluid mt-2 mb-2">
+    <img src="{% static 'media/index.jpg' %}" class="img img-fluid" style="height: 450px;width:100%">
+</div>
+    <div class="container row text-center ml-lg-5">
+        {% for d in data %}
+            <div class="card col-sm-4">
+                <div class="card-header bg-info">
+                    {{ d.product_name }}
+                </div>
+                <div class="card-body">
+                    <a href="product_page?btn={{ d.p_id }}"><img src="{% static d.photo %}" style="height: 200px"></a>
+                </div>
+                <div class="card-footer bg-dark" style="height: 50px">
+                    <label style="color: red">Price:&nbsp;<strike>{{ d.product_price }}</strike></label>&nbsp;
+                    <span style="color: white">Discount Price:&nbsp;{{ d.discount_price }}&nbsp;
+
+                    <a href="product_page?btn={{ d.p_id }}" style="color: white"><i class="fas fa-cart-plus fa-lg"></i></a></span>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+</body>
+</html>
