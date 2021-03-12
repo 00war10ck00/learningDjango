@@ -32,4 +32,7 @@ urlpatterns = [
     path('checkout', checkout, name='checkout'),
     path('payment_action', payment_action, name='payment_action'),
     path('thankspage', thankspage, name='thankspage'),
+
+    # -------------------User InterFace------------------------
+    path('userIndex', userIndex),
 ]

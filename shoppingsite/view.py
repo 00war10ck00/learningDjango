@@ -196,3 +196,9 @@ def thankspage(request):
         pass
     id = request.GET['billid']
     return render(request,'thankspage.html',{'id':id})
+
+
+# user interface
+
+def userIndex(request):
+    return render(request, 'userGUI/index.html')

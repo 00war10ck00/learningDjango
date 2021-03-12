@@ -39,7 +39,9 @@
         </tfoot>
     </table>
     <div class="text-center">
+        {% if 'cart' in request.session %}
         <a href="{% url 'checkout' %}" class="btn btn-outline-success w-25"><strong>CHECKOUT</strong></a>
+        {% endif %}
     </div>
     <div id="msg"></div>
     {#    {{ request.session.cart }}#}
@@ -58,7 +60,7 @@
                     createTable(data)
                     d = `
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                             <strong>Empty</strong> You should check in on some of those fields below.
+                             <strong>Empty</strong> You should check in on some of those products.
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                  </button>

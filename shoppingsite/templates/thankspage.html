@@ -12,9 +12,14 @@
 </head>
 <body>
 {% include 'navbar.html' %}
-
-<h1>{{ id }}</h1>
-
+<div class="container col-6 mt-4 text-center">
+    <div class="card bg-warning">
+<h4 class="text-justify ml-4 mt-1" >Thanks for ordering with us. Your Transaction ID is: {{ id }}</h4>
+    </div>
+    <div class="card-body">
+        <a href="view" style="color: red">Go To Home Page</a>
+    </div>
+</div>
 
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
