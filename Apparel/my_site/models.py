@@ -6,7 +6,7 @@ class category(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
-    object =models.manager
+    object = models.manager
 
     def __str__(self):
         return self.name
