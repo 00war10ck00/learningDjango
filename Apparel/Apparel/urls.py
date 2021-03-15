@@ -18,7 +18,14 @@ from django.urls import path
 from view import *
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',index),
+    path('index',index),
     path('productpage',productpage),
-    path('product',product)
+    path('product',product),
+    path('login',login),
+    path('register',register),
+    path('usersignup',usersignup),
+    path('userlogin',userlogin),
+    path('dashboard',dashboard),
+    path('logout',logout),
+    path('cartaddition',cartaddition, name="cartaddition"),
 ]
