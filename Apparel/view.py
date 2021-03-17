@@ -1,10 +1,17 @@
-from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from sqlite3 import *
+
+from django.contrib import messages
+
+data1 = []
+count = 0
+
 
 def connection():
     conn = connect('db.sqlite3')
     return conn
+
 
 def index(request):
     data = []
@@ -45,15 +52,15 @@ def index(request):
         dict1[name_fields[5]] = x[5]
         dict1['count'] = count
         data1.append(dict1)
-    return render(request,'index.html',{'data':data,'data1':data1})
+    return render(request, 'index.html', {'data': data, 'data1': data1})
 
 
 def product(request):
-    return render(request,'product.html')
+    return render(request, 'product.html')
 
 
 def productpage(request):
-    data =[]
+    data = []
     count = -1
     mydb = connection()
     cr = mydb.cursor()
@@ -71,14 +78,16 @@ def productpage(request):
         dict1[name_fields[5]] = x[5]
         dict1['count'] = count
         data.append(dict1)
-    return render(request,'productpage.html',{'data':data})
+    return render(request, 'productpage.html', {'data': data})
 
 
 def login(request):
-    return render(request,'login.html')
+    return render(request, 'login.html')
+
 
 def register(request):
-    return render(request,'register.html')
+    return render(request, 'register.html')
+
 
 def usersignup(request):
     name = request.GET['name']
@@ -91,15 +100,19 @@ def usersignup(request):
 
     # query="create table my_site_usersignup(id int, name varchar(255), username varchar(255), email varchar(50), password varchar(255))"
     # query = "alter table my_site_usersignup MODIFY column username varchar(255) primary key"
-    query = "select * from my_site_usersignup where username = '"+username+"'"
+    query = "select * from my_site_usersignup where username = '" + username + "'"
     cr.execute(query)
     result = cr.fetchall()
-    if  len(result) <= 0:
-        query = "insert into my_site_usersignup(name,username,email,password) values('"+name+"','"+username+"','"+email+"','"+password+"')"
+    if len(result) <= 0:
+        query = "insert into my_site_usersignup(name,username,email,password) values('" + name + "','" + username + "','" + email + "','" + password + "')"
         cr.execute(query)
         mydb.commit()
 
     return redirect(login)
+
+
+def login(request):
+    return render(request, 'login.html')
 
 
 def userlogin(request):
@@ -109,7 +122,7 @@ def userlogin(request):
     mydb = connection()
     cr = mydb.cursor()
 
-    query = "select * from my_site_usersignup where username = '"+username+"' and password = '"+password+"'"
+    query = "select * from my_site_usersignup where username = '" + username + "' and password = '" + password + "'"
     cr.execute(query)
     name_fields = [i[0] for i in cr.description]
     result = cr.fetchall()
@@ -128,7 +141,8 @@ def userlogin(request):
 
 
 def dashboard(request):
-    return render(request,'dashboard.html')
+    return render(request, 'dashboard.html')
+
 
 def logout(request):
     del request.session['user']
@@ -136,13 +150,59 @@ def logout(request):
 
 
 def cartaddition(request):
-    data = []
-    mydb = connection()
-    cr = mydb.cursor()
-
     id = request.GET['id']
-    query = "select * from my_site_product where id = '"+id+"'"
-    cr.execute()
+    x = []
+    try:
+        x = request.session['cart']
+    except:
+        pass
+
+    query = "select * from my_site_product where id ={}".format(str(id))
+    conn = connection()
+    cr = conn.cursor()
+    cr.execute(query)
+    result = cr.fetchone()
+    d = {
+        'id': result[0],
+        'name': result[1],
+        'price': result[2],
+        'disc': result[3],
+        'photo': result[4],
+        'qty': 1,
+        'total': result[3]
+    }
+    if len(x) > 0:
+
+        for row in x:
+            if str(id) == str(row['id']):
+
+                return HttpResponse("Already in Cart")
+        x.append(d)
+    else:
+        x.append(d)
+    print(x)
+    request.session['cart'] = x
+    return HttpResponse(len(x))
 
 
-    return HttpResponse("success")
+# def increment(request):
+#     global count
+#     count += 1
+#     return JsonResponse({'count':count},safe=False)
+
+
+def cartPage(request):
+    return render(request, 'cart.html')
+
+
+def cartajax(request):
+    x = request.session['cart']
+    print(x)
+    total = 0
+    for data in x:
+        total += data['total_price']
+    return JsonResponse({'data': x, 'total': total}, safe=False)
+
+
+def checkout(request):
+    return render(request, 'checkout.html')
