@@ -276,25 +276,25 @@
             <span class="divider"></span>
             <div class="dropdown cart-dropdown">
 
-{#                {% if 'cart' in request.session %}#}
-                    {% if 'user' in request.session %}
-                        <a href="cartPage" class="cart-toggle">
-                        <span class="cart-label">
+{#                             {% if 'cart' in request.session %}#}
+                {% if 'user' in request.session %}
+                    <a href="cartPage" class="cart-toggle">
+                    <span class="cart-label">
                                     <span class="cart-name">My Cart</span>
-                                    <span class="cart-price">{{ request.session.cart.0.total_price }}</span>
+{#                                    <span class="cart-price">{{ request.session.cart.0.total }}</span>#}
                                 </span>
-                        <i class="minicart-icon" id="countProduct">
-                            <span class="cart-count" id="cartCount5"></span>
-                        </i>
-{#                    {% endif %}#}
+                    <i class="minicart-icon" id="countProduct">
+                        <span class="cart-count" id="cartCount5">{{ request.session.cart|length }}</span>
+                    </i>
+                    {#                    {% endif %}#}
                 {% else %}
                     <a href="login" class="cart-toggle">
                     <span class="cart-label">
                                     <span class="cart-name">My Cart</span>
-                                    <span class="cart-price">0.00</span>
+{#                                    <span class="cart-price">0.00</span>#}
                                 </span>
                     <i class="minicart-icon">
-                        <span class="cart-count" id="cartCount5">0</span>
+                        <span class="cart-count" id="cartCount5">{{ request.session.cart|length }}</span>
                     </i>
                 {% endif %}
                 </a>

@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from sqlite3 import *
-
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 
 data1 = []
@@ -180,7 +180,7 @@ def cartaddition(request):
         x.append(d)
     else:
         x.append(d)
-    print(x)
+
     request.session['cart'] = x
     return HttpResponse(len(x))
 
@@ -197,12 +197,86 @@ def cartPage(request):
 
 def cartajax(request):
     x = request.session['cart']
-    print(x)
+    # print(x)
     total = 0
     for data in x:
-        total += data['total_price']
-    return JsonResponse({'data': x, 'total': total}, safe=False)
+        total += data['total']
+    return JsonResponse({'data': x, 'grand_total': total}, safe=False)
 
 
 def checkout(request):
-    return render(request, 'checkout.html')
+    x = request.session['cart']
+    grand_total = 0
+    for i in x:
+        grand_total += i['total']
+    # print(x)
+    return render(request, 'checkout.html',{'data':x,'grand_total':grand_total})
+
+
+def increment(request):
+    x = request.session['cart']
+    id = request.GET['id']
+    s = request.GET['st']
+    # print(x)
+    if s == '0':
+        for data in x:
+            if str(data['id']) == str(id):
+                val = int(data['quantity'])
+                if val > 1:
+                    data['quantity'] = val - 1
+                    data['total'] = int(data['total']) - int(data['discount'])
+    else:
+        for data in x:
+            if str(data['id']) == str(id):
+                val = int(data['quantity'])
+                if val < 10:
+                    data['quantity'] = val + 1
+                    data['total'] = int(data['discount']) * int(data['quantity'])
+
+
+    request.session['cart'] = x
+    # print(x)
+    return HttpResponse("success")
+
+
+def deletecart(request):
+    id = request.GET['id']
+    x = request.session['cart']
+
+    count = 0
+    for data in x:
+
+        if str(data['id']) == str(id):
+            del x[count]
+        else:
+            count += 1
+    request.session['cart'] = x
+    return HttpResponse("success")
+
+
+@csrf_exempt
+def payment_action(request):
+    first_name = request.POST['first_name']
+    last_name = request.POST['last_name']
+    country = request.POST['country']
+    phone = request.POST['phone']
+    email = request.POST['email']
+    address = request.POST['address']
+    type = request.POST['type']
+    total = request.POST['total']
+
+    mydb = connection()
+    cr = mydb.cursor()
+    query = f"INSERT INTO `my_site_bill`(`name`, `price`, `email`, `mobile`, `address`, `type`) VALUES ('{first_name}',{total},'{email}','{phone}','{address}','{type}')"
+
+    cr.execute(query)
+
+    id = cr.lastrowid
+    x = request.session['cart']
+    print(id)
+
+    for row in x:
+        query = f"INSERT INTO `my_site_billdetail`(`billid`, `first_name`, `last_name`, `price`, `qunatity`, `country`, `address`, `email`, `phone`, `totalprice`, `name`, `photo`) VALUES ({id}, '{first_name}', '{last_name}' '{row['price']}','{row['quantity']}', '{country}', '{address}', '{email}', '{phone}' '{row['total']}','{row['name']}','{row['photo']}')"
+        cr.execute(query)
+    mydb.commit()
+    return JsonResponse({'billid':id})

@@ -32,4 +32,6 @@ urlpatterns = [
     path('cartajax',cartajax),
     path('login',login),
     path('checkout',checkout),
+    path('increment',increment),
+    path('deletecart',deletecart),
 ]
