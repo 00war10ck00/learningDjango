@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from d-themes.com/html/donald/account.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 12 Mar 2021 07:22:54 GMT -->
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <title>Donald - Bootstrap eCommerce Template</title>
+
+    <meta name="keywords" content="HTML5 Template"/>
+    <meta name="description" content="Donald - Bootstrap eCommerce Template">
+    <meta name="author" content="D-THEMES">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{% static 'templatecss/images/icons/favicon.png' %}">
+
+    <script>
+        WebFontConfig = {
+            google: {families: ['Open+Sans:400,600,700', 'Poppins:400,500,600,700']}
+        };
+        (function (d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'js/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+    </script>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'templatecss/vendor/fontawesome-free/css/all.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'templatecss/vendor/animate/animate.min.css' %}">
+
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'templatecss/vendor/magnific-popup/magnific-popup.min.css' %}">
+
+    <!-- Main CSS File -->
+    <link rel="stylesheet" type="text/css" href="{% static 'templatecss/css/style.min.css' %}">
+</head>
+
+<body>
+<div class="loading-overlay">
+    <div class="bounce-loader">
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+        <div class="bounce4"></div>
+    </div>
+</div>
+{% include 'navbar.html' %}
+
+<!-- End Header -->
+<main class="main account">
+    <div class="page-header"
+         style="background-image: url({% static 'templatecss/images/page-header.jpg' %}); background-color: #3C63A4;">
+        <h1 class="page-title">My Account</h1>
+        <ul class="breadcrumb">
+            <li><a href="demo1.html"><i class="d-icon-home"></i></a></li>
+            <li>Welcome</li>
+        </ul>
+    </div>
+    <!-- End PageHeader -->
+    <div class="page-content mt-10 mb-10">
+        <div class="container pt-1">
+            <div class="tab tab-vertical">
+                <ul class="nav nav-tabs mb-4" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#orders">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#downloads">Downloads</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#address">Addresses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#account">Account details</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="logout">Logout</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="dashboard">
+                        <p class="mb-2">
+                            Hello <span>{{ request.session.user.0.name }}</span> (not
+                            <span>{{ request.session.user.0.name }}</span>? <a href="logout"
+                                                                               class="text-secondary">Log out</a>)
+                        </p>
+                        <p>
+                            From your account dashboard you can view your <a href="#orders"
+                                                                             class="link-to-tab text-secondary">recent
+                            orders</a>, manage your <a
+                                href="#address" class="link-to-tab text-secondary">shipping and billing
+                            addresses</a>, and <a href="#account" class="link-to-tab text-secondary">edit
+                            your password and account details</a>.
+                        </p>
+                    </div>
+                    <div class="tab-pane" id="orders">
+                        {% if 'cart' in request.session %}
+                             <p class=" b-2">Go to your cart.</p>
+                            <a href="cartPage" class="btn btn-primary">Go Cart</a>
+                        {% else %}
+
+                            <p class=" b-2">No order has been made yet.</p>
+                            <a href="#" class="btn btn-primary">Go Shop</a>
+
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane" id="downloads">
+                        <p class="mb-2">No downloads available yet.</p>
+                        <a href="#" class="btn btn-primary">Go Shop</a>
+                    </div>
+                    <div class="tab-pane" id="address">
+                        <p class="mb-2">The following addresses will be used on the checkout page by default.
+                        </p>
+                        <div class="row">
+                            <div class="col-lg-6 mb-4">
+                                <div class="card card-address">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Billing Address</h5>
+                                        <p>User Name<br>
+                                            User Company<br>
+                                            John str<br>
+                                            New York, NY 10001<br>
+                                            1-234-987-6543<br>
+                                            yourmail@mail.com<br>
+                                        </p>
+                                        <a href="#" class="btn btn-link btn-secondary btn-underline">Edit <i
+                                                class="far fa-edit"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 mb-4">
+                                <div class="card card-address">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Shipping Address</h5>
+                                        <p>You have not set up this type of address yet.</p>
+                                        <a href="#" class="btn btn-link btn-secondary btn-underline">Edit <i
+                                                class="far fa-edit"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="account">
+                        <form action="#" class="form">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>First Name *</label>
+                                    <input type="text" class="form-control" name="first_name" required="">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Last Name *</label>
+                                    <input type="text" class="form-control" name="last_name" required="">
+                                </div>
+                            </div>
+
+                            <label>Display Name *</label>
+                            <input type="text" class="form-control mb-0" name="display_name" required="">
+                            <small class="d-block form-text mb-4">This will be how your name will be displayed
+                                in the account section and in reviews</small>
+
+                            <label>Email address *</label>
+                            <input type="email" class="form-control" name="email" required="">
+
+                            <label>Current password (leave blank to leave unchanged)</label>
+                            <input type="password" class="form-control" name="current_password">
+
+                            <label>New password (leave blank to leave unchanged)</label>
+                            <input type="password" class="form-control" name="new_password">
+
+                            <label>Confirm new password</label>
+                            <input type="password" class="form-control" name="confirm_password">
+
+                            <button type="submit" class="btn btn-primary btn-reveal-right">SAVE CHANGES <i
+                                    class="d-icon-arrow-right"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- End Main -->
+
+{% include 'footer.html' %}
+<!-- End Footer -->
+{#	</div>#}
+<!-- Plugins JS File -->
+<script src="{% static 'templatecss/vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'templatecss/vendor/elevatezoom/jquery.elevatezoom.min.js' %}"></script>
+<script src="{% static 'templatecss/vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+<script src="{% static 'templatecss/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+<!-- Main JS File -->
+<script src="{% static 'templatecss/js/main.js' %}"></script>
+</body>
+</html>
