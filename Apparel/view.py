@@ -166,9 +166,9 @@ def cartaddition(request):
         'id': result[0],
         'name': result[1],
         'price': result[2],
-        'disc': result[3],
+        'discount': result[3],
         'photo': result[4],
-        'qty': 1,
+        'quantity': 1,
         'total': result[3]
     }
     if len(x) > 0:

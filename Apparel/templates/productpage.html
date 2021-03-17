@@ -476,13 +476,13 @@
                                                         var xhttp = new XMLHttpRequest();
                                                         xhttp.onreadystatechange = function () {
                                                             if (this.readyState == 4 && this.status == 200) {
-                                                                console.log(this.response);
+                                                                {#console.log(this.response);#}
                                                                 var output = this.response;
                                                                 if (output == 'Already in Cart') {
                                                                     alert(output);
 
                                                                 } else {
-                                                                    console.log(document.getElementById('cartCount5'))
+                                                                    {#console.log(document.getElementById('cartCount5'))#}
                                                                     document.getElementById('cartCount5').innerHTML = output;
                                                                 }
                                                             }
