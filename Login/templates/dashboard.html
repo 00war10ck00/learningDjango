@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>dashboarb</title>
+</head>
+<body>
+{#{{ data.0 }}#}
+{#{{ request.session.admin }}#}
+<strong>Name</strong>
+<hr>
+{{ request.session.admin.0 }}
+<hr>
+{#<img src="{% get_static_prefix %}{{data.2}}">#}
+<img src="{% static request.session.admin.2 %}">
+
+<a href="logout" >Logout</a>
+</body>
+</html>

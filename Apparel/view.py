@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from sqlite3 import *
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-
+from datetime import date
 data1 = []
 count = 0
 
@@ -56,7 +56,24 @@ def index(request):
 
 
 def product(request):
-    return render(request, 'product.html')
+    data = []
+    id = request.GET['id']
+    mydb = connection()
+    cr = mydb.cursor()
+    query = "select * from my_site_product where id = '"+id+"'"
+    cr.execute(query)
+    name_list = [i[0] for i in cr.description]
+    for x in cr:
+        dict1 = {}
+        dict1[name_list[0]] = x[0]
+        dict1[name_list[1]] = x[1]
+        dict1[name_list[2]] = x[2]
+        dict1[name_list[3]] = x[3]
+        dict1[name_list[4]] = x[4]
+        dict1[name_list[5]] = x[5]
+        data.append(dict1)
+
+    return render(request, 'product.html',{'data':data})
 
 
 def productpage(request):
@@ -130,27 +147,49 @@ def userlogin(request):
     if len(result) != 0:
         for x in result:
             dict1 = {}
+            dict1[name_fields[0]] = x[0].title()
             dict1[name_fields[1]] = x[1].title()
             dict1[name_fields[2]] = x[2]
-            dict1[name_fields[3]] = x[3]
             data.append(dict1)
         request.session['user'] = data
+
         return redirect(dashboard)
     else:
         return redirect(login)
 
 
 def dashboard(request):
-    return render(request, 'dashboard.html')
+    if 'user' in request.session:
+        data = []
+        x = request.session['user']
+        mydb = connection()
+        cr = mydb.cursor()
+        query = "select * from my_site_bill where email = '"+x[0]['email']+"'"
+        cr.execute(query)
+        name_list = [i[0] for i in cr.description]
+        for x in cr:
+            dict1 = {}
+            dict1[name_list[0]] = x[0]
+            dict1[name_list[1]] = x[1]
+            dict1[name_list[7]] = x[7]
+            dict1[name_list[8]] = x[8]
+            dict1[name_list[2]] = x[2]
+            data.append(dict1)
+        return render(request, 'dashboard.html',{'data':data})
+    else:
+        return redirect(login)
 
 
 def logout(request):
-    del request.session['user']
-    return redirect(login)
-
+    if 'user' in request.session:
+        del request.session['user']
+        return redirect(login)
+    else:
+        return redirect(login)
 
 def cartaddition(request):
     id = request.GET['id']
+    quantity = int(request.GET['quantity'])
     x = []
     try:
         x = request.session['cart']
@@ -168,14 +207,13 @@ def cartaddition(request):
         'price': result[2],
         'discount': result[3],
         'photo': result[4],
-        'quantity': 1,
+        'quantity': quantity,
         'total': result[3]
     }
     if len(x) > 0:
 
         for row in x:
             if str(id) == str(row['id']):
-
                 return HttpResponse("Already in Cart")
         x.append(d)
     else:
@@ -192,8 +230,10 @@ def cartaddition(request):
 
 
 def cartPage(request):
-    return render(request, 'cart.html')
-
+    if 'user' in request.session:
+        return render(request, 'cart.html')
+    else:
+        return redirect(login)
 
 def cartajax(request):
     x = request.session['cart']
@@ -205,13 +245,15 @@ def cartajax(request):
 
 
 def checkout(request):
-    x = request.session['cart']
-    grand_total = 0
-    for i in x:
-        grand_total += i['total']
+    if 'user' in request.session:
+        x = request.session['cart']
+        grand_total = 0
+        for i in x:
+            grand_total += i['total']
     # print(x)
-    return render(request, 'checkout.html',{'data':x,'grand_total':grand_total})
-
+        return render(request, 'checkout.html',{'data':x,'grand_total':grand_total})
+    else:
+        return redirect(index)
 
 def increment(request):
     x = request.session['cart']
@@ -264,10 +306,11 @@ def payment_action(request):
     address = request.POST['address']
     type = request.POST['type']
     total = request.POST['total']
-
+    date1 = date.today()
     mydb = connection()
     cr = mydb.cursor()
-    query = f"INSERT INTO `my_site_bill`(`name`, `price`, `email`, `mobile`, `address`, `type`) VALUES ('{first_name}',{total},'{email}','{phone}','{address}','{type}')"
+
+    query = f"INSERT INTO `my_site_bill`(`name`, `price`, `email`, `mobile`, `address`, `type`,`status`, `date`) VALUES ('{first_name}',{total},'{email}','{phone}','{address}','{type}', 'pending','{date1}')"
 
     cr.execute(query)
 
@@ -276,7 +319,111 @@ def payment_action(request):
     print(id)
 
     for row in x:
-        query = f"INSERT INTO `my_site_billdetail`(`billid`, `first_name`, `last_name`, `price`, `qunatity`, `country`, `address`, `email`, `phone`, `totalprice`, `name`, `photo`) VALUES ({id}, '{first_name}', '{last_name}' '{row['price']}','{row['quantity']}', '{country}', '{address}', '{email}', '{phone}' '{row['total']}','{row['name']}','{row['photo']}')"
+        query = f"INSERT INTO `my_site_billingdetail`(`bill_id`, `first_name`, `last_name`, `price`, `quantity`, `country`, `address`, `email`, `phone`, `totalprice`, `name`, `photo`) VALUES ({id}, '{first_name}', '{last_name}', '{row['price']}','{row['quantity']}', '{country}', '{address}', '{email}', '{phone}', '{row['total']}','{row['name']}','{row['photo']}')"
         cr.execute(query)
     mydb.commit()
     return JsonResponse({'billid':id})
+
+
+def thankspage(request):
+    data = []
+    data2 = []
+    id = request.GET['billid']
+    mydb = connection()
+    cr = mydb.cursor()
+    query = "select * from my_site_bill where bill_id = '"+id+"'"
+    cr.execute(query)
+    name_list = [i[0] for i in cr.description]
+    for x in cr:
+        dict1 = {}
+        dict1[name_list[0]] = x[0]
+        dict1[name_list[7]] = x[7]
+        dict1[name_list[8]] = x[8]
+        dict1[name_list[2]] = x[2]
+        dict1[name_list[6]] = x[6]
+        dict1[name_list[5]] = x[5]
+        data.append(dict1)
+    query = "select name, quantity,price from my_site_billingdetail where bill_id = '"+id+"'"
+    cr.execute(query)
+    for x in cr:
+        dict1 = {}
+        dict1['name'] = x[0]
+        dict1['quantity'] = x[1]
+        dict1['price'] = x[2]
+        data2.append(dict1)
+    return render(request,'order.html',{'data':data,'data2':data2})
+
+from my_site import models
+
+@csrf_exempt
+def getdetails(request):
+    id = request.POST['id']
+    # print(id)
+    mydb = connection()
+    cr = mydb.cursor()
+    q = 'select * from my_site_billingdetail where bill_id="{}"'.format(id)
+    cr.execute(q)
+    print(q)
+    result = cr.fetchall()
+    x = []
+    for row in result:
+        d = {
+            'id': row[1],
+            'price': row[4],
+            'quantity': row[5],
+            'total': row[10],
+            'photo': row[12],
+            'name': row[11]
+        }
+        x.append(d)
+        print(x)
+    return JsonResponse(x, safe=False)
+
+
+def category(request):
+    data = []
+    count = -1
+    id = request.GET['id']
+    mydb = connection()
+    cr = mydb.cursor()
+    query = "select * from my_site_product where category_id = '"+id+"'"
+    cr.execute(query)
+    name_fields = [i[0] for i in cr.description]
+    for x in cr:
+        count += 1
+        dict1 = {}
+        dict1[name_fields[0]] = x[0]
+        dict1[name_fields[1]] = x[1]
+        dict1[name_fields[2]] = x[2]
+        dict1[name_fields[3]] = x[3]
+        dict1[name_fields[4]] = x[4]
+        dict1[name_fields[5]] = x[5]
+        dict1['count'] = count
+        data.append(dict1)
+    return render(request, 'productpage.html', {'data': data})
+
+@csrf_exempt
+def changepassword(request):
+    password = ''
+    email = request.session['user'][0]['email']
+    current_password = request.POST['current_password']
+    new_password = request.POST['new_password']
+    confirm_password = request.POST['confirm_password']
+    mydb = connection()
+    cr = mydb.cursor()
+    query = "select password from my_site_usersignup where email = '"+email+"'"
+    cr.execute(query)
+    result = cr.fetchone()
+    for x in result:
+        password = x
+    if (new_password == confirm_password) and (current_password == password):
+        query = "update my_site_usersignup set password = '"+new_password+"' where email = '"+email+"'"
+        cr.execute(query)
+        mydb.commit()
+        messages.success(request,"password changed successfully")
+        return HttpResponseRedirect('dashboard')
+        # return HttpResponse("success")
+    else:
+        messages.error(request, "Error in changing password, check your password and try again")
+        return HttpResponseRedirect('dashboard')
+        # return HttpResponse("failed")

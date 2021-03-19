@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from d-themes.com/html/donald/order.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 12 Mar 2021 07:24:08 GMT -->
+<head>
+    {% load static %}
+	<meta charset="UTF-8">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+	<title>Donald - Bootstrap eCommerce Template</title>
+
+	<meta name="keywords" content="HTML5 Template" />
+	<meta name="description" content="Donald - Bootstrap eCommerce Template">
+	<meta name="author" content="D-THEMES">
+
+	<!-- Favicon -->
+	<link rel="icon" type="image/png" href="{% static 'templatecss/images/icons/favicon.png' %}{% static 'templatecss/'' %}'">
+
+	<script>
+		WebFontConfig = {
+			google: { families: ['Open+Sans:400,600,700', 'Poppins:400,500,600,700'] }
+		};
+		(function (d) {
+			var wf = d.createElement('script'), s = d.scripts[0];
+			wf.src = 'js/webfont.js';
+			wf.async = true;
+			s.parentNode.insertBefore(wf, s);
+		})(document);
+	</script>
+
+
+	<link rel="stylesheet" type="text/css" href="{% static 'templatecss/vendor/fontawesome-free/css/all.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'templatecss/vendor/animate/animate.min.css' %}">
+
+	<!-- Plugins CSS File -->
+	<link rel="stylesheet" type="text/css" href="{% static 'templatecss/vendor/magnific-popup/magnific-popup.min.css' %}">
+
+	<!-- Main CSS File -->
+	<link rel="stylesheet" type="text/css" href="{% static 'templatecss/css/style.min.css' %}">
+</head>
+
+<body>
+	<div class="loading-overlay">
+		<div class="bounce-loader">
+			<div class="bounce1"></div>
+			<div class="bounce2"></div>
+			<div class="bounce3"></div>
+			<div class="bounce4"></div>
+		</div>
+	</div>
+    {% include 'navbar.html' %}
+		<!-- End Header -->
+		<main class="main order">
+			<div class="page-content pt-10 pb-10">
+				<div class="step-by pt-2 pb-2 pr-4 pl-4">
+					<h3 class="title title-simple title-step visited"><a href="cart.html">1. Shopping Cart</a></h3>
+					<h3 class="title title-simple title-step active"><a href="checkout.html">2. Checkout</a></h3>
+					<h3 class="title title-simple title-step"><a href="#">3. templatecss</a></h3>
+				</div>
+				<div class="container mt-8">
+					<div class="order-message">
+						<i class="fas fa-check"></i>Thank you, Your order has been received.
+					</div>
+					
+
+					<div class="order-results pt-8 pb-8">
+						<div class="overview-item">
+							<span>Order number</span>
+							<strong>{{ data.0.bill_id }}</strong>
+						</div>
+						<div class="overview-item">
+							<span>Status</span>
+							<strong>{{ data.0.status }}</strong>
+						</div>
+						<div class="overview-item">
+							<span>Date</span>
+							<strong>{{ data.0.date }}</strong>
+						</div>
+						<div class="overview-item">
+							<span>Total</span>
+							<strong>$ {{ data.0.price }}</strong>
+						</div>
+						<div class="overview-item">
+							<span>Payment method</span>
+							<strong>{{ data.0.type }}</strong>
+						</div>
+					</div>
+
+					<h2 class="title title-simple text-left pt-3">Order Details</h2>
+					<div class="order-details mb-1">
+						<table class="order-details-table">
+							<thead>
+								<tr class="summary-subtotal">
+									<td>
+										<h3 class="summary-subtitle">Product</h3>
+									</td>	
+									<td></td>		
+								</tr>
+							</thead>
+							<tbody>
+                            {% for d in data2 %}
+								<tr>
+									<td class="product-name">{{ d.name }}<span> <i class="fas fa-times"></i> {{ d.quantity }}</span></td>
+									<td class="product-price">$ {{ d.price }}</td>
+								</tr>
+                            {% endfor %}
+								<tr class="summary-subtotal">
+									<td>
+										<h4 class="summary-subtitle">Subtotal:</h4>
+									</td>
+									<td class="summary-subtotal-price">$ {{ data.0.price }}</td>
+								</tr>
+								<tr class="summary-subtotal">
+									<td>
+										<h4 class="summary-subtitle">Shipping:</h4>
+									</td>
+									<td class="summary-subtotal-price">Free shipping</td>
+								</tr>
+								<tr class="summary-subtotal">
+									<td>
+										<h4 class="summary-subtitle">Payment method:</h4>
+									</td>
+									<td class="summary-subtotal-price">{{ data.0.type }}</td>
+								</tr>
+								<tr class="summary-subtotal">
+									<td>
+										<h4 class="summary-subtitle">Total</h4>
+									</td>
+									<td>
+										<p class="summary-total-price">$ {{ data.0.price }}</p>
+									</td>												
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<h2 class="title title-simple text-left pt-8 mb-2">Billing Address</h2>
+					<div class="address-info pb-8 mb-6">
+						<p class="address-detail pb-2">
+{#							John Doe<br>#}
+{#							Donald Company<br>#}
+{#							Steven street<br>#}
+{#							El Carjon, CA 92020<br>#}
+{#							123456789#}
+                            {{ data.0.address }}
+						</p>
+						<p class="email">mail@donald.com</p>
+					</div>
+
+					<a href="dashboard" class="btn btn-icon-left btn-back btn-md mb-4"><i class="d-icon-arrow-left"></i> Dashboard</a>
+				</div>
+			</div>
+		</main>
+		<!-- End Main -->
+
+    {% include 'footer.html' %}
+	<!-- Plugins JS File -->
+	<script src="{% static 'templatecss/vendor/jquery/jquery.min.js' %}"></script>
+	<script src="{% static 'templatecss/vendor/sticky/sticky.min.js' %}"></script>
+	<script src="{% static 'templatecss/vendor/elevatezoom/jquery.elevatezoom.min.js' %}"></script>
+	<script src="{% static 'templatecss/vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+	<script src="{% static 'templatecss/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+	<!-- Main JS File -->
+	<script src="{% static 'templatecss/js/main.js' %}"></script>
+</body>
+
+
+<!-- Mirrored from d-themes.com/html/donald/order.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 12 Mar 2021 07:24:08 GMT -->
+</html>

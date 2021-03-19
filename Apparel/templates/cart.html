@@ -29,40 +29,47 @@
     <!-- Main CSS File -->
     <link rel="stylesheet" type="text/css" href="{% static 'templatecss/css/style.min.css' %}">
     <script>  function getTable() {
-            {#alert('Hello')#}
-            var xhttp = new XMLHttpRequest();
-            {#console.log('success')#}
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var output = JSON.parse(this.response);
-                    console.log(output)
-                    var data = output['data'];
-                    if (data.length > 0) {
-                        createTable(data)
-                    } else {
-                        createTable(data)
-                        d = `
+        {#alert('Hello')#}
+        var xhttp = new XMLHttpRequest();
+        {#console.log('success')#}
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var output = JSON.parse(this.response);
+                console.log(output)
+                var data = output['data'];
+                if (data.length > 0) {
+                    createTable(data)
+                } else {
+                    createTable(data)
+                    d = `
                     <div class="alert alert-warning alert-dismissible fade show" role="alert">
                              <strong>Empty</strong> You should check in on some of those products.
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                  </button>
                     </div>`
-                        document.getElementById('msg').innerHTML = d;
-                    }
-
-                    document.getElementById('grand_total').innerHTML = '$ '+output['grand_total']
-                    document.getElementById('grand_total1').innerHTML = '$ '+output['grand_total']
-
+                    document.getElementById('msg').innerHTML = d;
                 }
-            };
-            xhttp.open("GET", "cartajax", true);
-            xhttp.send();
-        }</script>
+
+                document.getElementById('grand_total').innerHTML = '$ ' + output['grand_total']
+                document.getElementById('grand_total1').innerHTML = '$ ' + output['grand_total']
+
+
+            }
+            if (output['grand_total'] == 0)
+                {
+                    alert('Your cart is empty / Now you will be directed to Dashboard');
+                    location.href = 'dashboard';
+                }
+        };
+        xhttp.open("GET", "cartajax", true);
+        xhttp.send();
+    }</script>
 
 </head>
 
 <body>
+
 <div class="loading-overlay">
     <div class="bounce-loader">
         <div class="bounce1"></div>
@@ -72,14 +79,14 @@
     </div>
 </div>
 {% include 'navbar.html' %}
-
+{% include 'alert.html' %}
 <!-- End Header -->
 <main class="main cart">
     <div class="page-content pt-10 pb-10">
         <div class="step-by pt-2 pb-2 pr-4 pl-4">
             <h3 class="title title-simple title-step active"><a href="cart.html">1. Shopping Cart</a></h3>
             <h3 class="title title-simple title-step"><a href="checkout">2. Checkout</a></h3>
-            <h3 class="title title-simple title-step"><a href="order.html">3. Order Complete</a></h3>
+            <h3 class="title title-simple title-step"><a href="#">3. Order Complete</a></h3>
         </div>
         <div class="container mt-8 mb-4">
             <div class="row gutter-lg">
@@ -220,69 +227,21 @@
                                         <p class="summary-subtotal-price" id="grand_total"></p>
                                     </td>
                                 </tr>
-                                <tr class="sumnary-shipping shipping-row-last">
-                                    <td colspan="2">
-                                        <h4 class="summary-subtitle">Shipping</h4>
-                                        <ul>
-                                            <li>
-                                                <div class="custom-radio">
-                                                    <input type="radio" id="free-shipping" name="shipping"
-                                                           class="custom-control-input" checked>
-                                                    <label class="custom-control-label" for="free-shipping">Free
-                                                        Shipping</label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="custom-radio">
-                                                    <input type="radio" id="standard_shipping" name="shipping"
-                                                           class="custom-control-input">
-                                                    <label class="custom-control-label"
-                                                           for="standard_shipping">Standard</label>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="custom-radio">
-                                                    <input type="radio" id="express_shipping" name="shipping"
-                                                           class="custom-control-input">
-                                                    <label class="custom-control-label"
-                                                           for="express_shipping">Express</label>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
+
                             </table>
-                            <div class="shipping-address pb-4">
-                                <label>Shipping to CA.</label>
-                                <div class="select-box">
-                                    <select name="country" class="form-control">
-                                        <option value="us" selected>United States</option>
-                                        <option value="uk">United Kingdom</option>
-                                        <option value="fr">France</option>
-                                        <option value="aus">Austria</option>
-                                    </select>
-                                </div>
-                                <div class="select-box">
-                                    <select name="country" class="form-control">
-                                        <option value="default" selected="selected">California</option>
-                                    </select>
-                                </div>
-                                <input type="text" class="form-control" name="code" placeholder="Town / city"/>
-                                <input type="text" class="form-control" name="code" placeholder="zip"/>
-                                <a href="#" class="btn btn-md">Update totals</a>
-                            </div>
-                            <table>
-                                <tr class="summary-subtotal">
-                                    <td>
-                                        <h4 class="summary-subtitle">Total</h4>
-                                    </td>
-                                    <td>
-                                        <p class="summary-total-price" id = "grand_total1"></p>
-                                    </td>
-                                </tr>
-                            </table>
-                            <a href="checkout" class="btn btn-dark btn-checkout">Proceed to checkout</a>
+                            <a href="#" class="btn btn-md">Update totals</a>
                         </div>
+                        <table>
+                            <tr class="summary-subtotal">
+                                <td>
+                                    <h4 class="summary-subtitle">Total</h4>
+                                </td>
+                                <td>
+                                    <p class="summary-total-price" id="grand_total1"></p>
+                                </td>
+                            </tr>
+                        </table>
+                            <a href="checkout" class="btn btn-dark btn-checkout">Proceed to checkout</a>
                     </div>
                 </aside>
             </div>
@@ -294,15 +253,15 @@
 <!-- End MobileMenu -->
 <!-- Plugins JS File -->
 <script>
-        {#function go() {#}
-        {#    alert()#}
+    {#function go() {#}
+    {#    alert()#}
 
 
-        function createTable(output) {
-            var data = ""
+    function createTable(output) {
+        var data = ""
 
-            for (var i = 0; i < output.length; i++) {
-                data += `
+        for (var i = 0; i < output.length; i++) {
+            data += `
                     <tr class="h5">
                     <td><img src="../static/${output[i]['photo']}" style="height:100px;width: 90px" "></td>
                     <td>${output[i]['name']}</td>
@@ -312,44 +271,45 @@
                     <td><a onclick="del(${output[i]['id']})" <i class="fas fa-ban fa-lg"></i></td>
                     </tr>
                     `
+        }
+        document.getElementById('tbody').innerHTML = data;
+    }
+
+    function inc_dec(id, s) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var output = this.response;
+                {#console.log(output)#}
+                if (output == 'success') {
+                    getTable();
+                }
             }
-            document.getElementById('tbody').innerHTML = data;
-        }
+        };
+        xhttp.open("GET", "increment?id=" + id + "&st=" + s, true);
+        xhttp.send();
+    }
 
-        function inc_dec(id, s) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var output = this.response;
-                    {#console.log(output)#}
-                    if (output == 'success') {
-                        getTable();
-                    }
+    function del(id) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                var output = this.response;
+                {#console.log(output)#}
+                if (output == 'success') {
+                    getTable();
                 }
-            };
-            xhttp.open("GET", "increment?id=" + id + "&st=" + s, true);
-            xhttp.send();
-        }
-        
-        function del(id) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var output = this.response;
-                    {#console.log(output)#}
-                    if (output == 'success') {
-                        getTable();
-                    }
-                }
-            };
-            xhttp.open("GET", "deletecart?id=" + id, true);
-            xhttp.send();
-        }
-        {#$(document).ready(function (){#}
-        {#    getTable();#}
-        {##}
+            }
+        };
+        xhttp.open("GET", "deletecart?id=" + id, true);
+        xhttp.send();
+    }
 
-    </script>
+    {#$(document).ready(function (){#}
+    {#    getTable();#}
+    {##}
+
+</script>
 <script>
     getTable();
 </script>

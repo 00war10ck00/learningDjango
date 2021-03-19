@@ -18,7 +18,7 @@ from django.urls import path
 from view import *
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('index',index),
+    path('',index, name="index"),
     path('productpage',productpage),
     path('product',product),
     path('login',login),
@@ -34,4 +34,9 @@ urlpatterns = [
     path('checkout',checkout),
     path('increment',increment),
     path('deletecart',deletecart),
+    path('payment_action',payment_action),
+    path('thankspage',thankspage),
+    path('getdetails',getdetails),
+    path('category',category),
+    path('changepassword',changepassword),
 ]

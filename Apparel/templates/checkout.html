@@ -68,7 +68,7 @@
         <div class="step-by pt-2 pb-2 pr-4 pl-4">
             <h3 class="title title-simple title-step visited"><a href="cartPage">1. Shopping Cart</a></h3>
             <h3 class="title title-simple title-step active"><a href="#">2. Checkout</a></h3>
-            <h3 class="title title-simple title-step"><a href="order.html">3. Order Complete</a></h3>
+            <h3 class="title title-simple title-step"><a href="#">3. templatecss</a></h3>
         </div>
         <div class="container mt-8">
             <form action="#" class="form" id="processTopay">
@@ -97,7 +97,7 @@
                         <div class="row">
                             <div class="col-xs-6">
                                 <label> Email address *</label>
-                                <input type="text" class="form-control" name="email" id="email" required=""/>
+                                <input type="text" class="form-control" name="email" id="email" value="{{ request.session.user.0.email }}" readonly/>
                             </div>
                             <div class="col-xs-6">
                                 <label>Phone *</label>
@@ -257,14 +257,16 @@
 {% include 'footer.html' %}
 <!-- Plugins JS File -->
 
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/popper.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.js' %}"></script>
 <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     function dopayment() {
         if ($('#processTopay').valid()) {
+            {#console.log({{ grand_total }});#}
             var first_name = document.getElementById('first_name').value;
             var last_name = document.getElementById('last_name').value;
             var country = document.getElementById('country').value;
@@ -272,7 +274,7 @@
             var email = document.getElementById('email').value;
             var phone = document.getElementById('phone').value;
             var type = document.getElementById('type').value;
-            var total = document.getElementById('total').value;
+            var total = {{ grand_total }}
             var formdata = new FormData();
             formdata.append('first_name', first_name);
             formdata.append('last_name', last_name);
@@ -282,7 +284,7 @@
             formdata.append('phone', phone);
             formdata.append('type', type);
             formdata.append('total', total);
-            console.log(type);
+            console.log(total);
             if (type == 'COD') {
                 console.log("Done");
                 var xml = new XMLHttpRequest();
@@ -290,7 +292,8 @@
                     if (this.readyState == 4 && this.status == 200) {
                         var ar = JSON.parse(this.response);
                         console.log(ar);
-                        {#window.location.href = "thankspage?billid=" + ar['billid'];#}
+                        window.location.href = "thankspage?billid=" + ar['billid'];
+                        {#window.location.href = "thankspage" ;#}
                     }
                 };
                 xml.open('POST', 'payment_action', true);
@@ -310,14 +313,15 @@
                             {#window.location.href = "bookingaction?status=failed";#}
                         } else {
                             {#alert('Success');#}
-                            {#window.location.href = "bookingaction?status=success&&gt=" + grandtotal;#}
+                            {#window.location.href = "thankspage?status=success&&gt=" + grandtotal;#}
                         }
                         var xml = new XMLHttpRequest();
                         xml.onreadystatechange = function () {
                             if (this.readyState == 4 && this.status == 200) {
                                 var ar = JSON.parse(this.response);
                                 console.log(ar);
-                                {#window.location.href = "thankspage?billid=" + ar['billid'];#}
+                                window.location.href = "thankspage?billid=" + ar['billid'];
+                                {#window.location.href = "thankspage";#}
                             }
                         };
                         xml.open('POST', 'payment_action', true);
@@ -326,7 +330,7 @@
                     "prefill": {
                         "name": "",
                         "email": email,
-                        "contact": mobile
+                        "contact": phone
                     },
                     "notes": {"address": "Razorpay Corporate Office"},
                     "theme": {"color": "#F37254"}
